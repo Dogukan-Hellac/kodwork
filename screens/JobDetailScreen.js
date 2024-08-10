@@ -1,9 +1,13 @@
-import { StyleSheet, Text, View, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
 import Entypo from '@expo/vector-icons/Entypo';
+import RenderHtml from 'react-native-render-html';
 
 export default function JobDetailScreen({ route }) {
     const { id, name, locations, levels, contents } = route.params
+
+    const htmlContent = contents;
+    const width = Dimensions.get('window').width;
 
     return (
         <View style={styles.container}>
@@ -22,7 +26,10 @@ export default function JobDetailScreen({ route }) {
             </View>
             <View style={styles.medium_container}>
                 <ScrollView>
-                    <Text style={styles.contents}>{contents}</Text>
+                    <RenderHtml
+                        contentWidth={width}
+                        source={{ html: htmlContent }}
+                    />
                 </ScrollView>
             </View>
             <View style={styles.bottom_container}>
@@ -84,7 +91,8 @@ const styles = StyleSheet.create({
     medium_container: {
         flex: 5,
         backgroundColor: 'white',
-        borderWidth: 0.5
+        borderWidth: 0.5,
+        padding: 10
     },
     contents: {},
     bottom_container: {
