@@ -1,13 +1,26 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Dimensions } from 'react-native'
-import React from 'react'
+import React from 'react';
 import Entypo from '@expo/vector-icons/Entypo';
 import RenderHtml from 'react-native-render-html';
+import { useDispatch, useSelector } from 'react-redux';
+import { add, remove } from '../store/reducer'
 
 export default function JobDetailScreen({ route }) {
     const { id, name, locations, levels, contents } = route.params
 
     const htmlContent = contents;
     const width = Dimensions.get('window').width;
+
+    const dispatch = useDispatch();
+    const ids = useSelector(state => state.ids.value);
+
+    const handleDispatch = () => {
+        if (id) {
+            if (!ids.includes(id)) {
+                dispatch(add(id))
+            }
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -33,11 +46,11 @@ export default function JobDetailScreen({ route }) {
                 </ScrollView>
             </View>
             <View style={styles.bottom_container}>
-                <TouchableOpacity style={styles.button_container}>
+                <TouchableOpacity style={styles.button_container} >
                     <Entypo name="login" size={20} color="white" />
                     <Text style={styles.button_text}>Submit</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button_container}>
+                <TouchableOpacity style={styles.button_container} onPress={handleDispatch}>
                     <Entypo name="heart" size={20} color="white" />
                     <Text style={styles.button_text}>Favorite Job</Text>
                 </TouchableOpacity>

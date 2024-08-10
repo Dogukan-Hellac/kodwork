@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
 
-export default function JobCard({ name, type, locations, levels, onPress }) {
+export default function JobCard({ name, type, locations, levels, onPress, favorite, remove }) {
     return (
         <TouchableWithoutFeedback onPress={onPress}>
             <View style={styles.container}>
@@ -11,6 +11,12 @@ export default function JobCard({ name, type, locations, levels, onPress }) {
                     <Text style={styles.locations}>{locations}</Text>
                 </View>
                 <Text style={styles.levels}>{levels}</Text>
+                {favorite ? (
+                    <TouchableOpacity style={styles.button_container} onPress={remove}>
+                        <Text style={styles.button_title}>Remove</Text>
+                    </TouchableOpacity>
+                ) : null}
+
             </View>
         </TouchableWithoutFeedback>
     )
@@ -49,5 +55,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'red',
         alignSelf: 'flex-end'
+    },
+    button_container: {
+        width: '99%',
+        backgroundColor: 'red',
+        padding: 10,
+        marginTop: 10,
+        alignSelf: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+    },
+    button_title: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 15
     }
 })

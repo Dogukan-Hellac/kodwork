@@ -1,11 +1,16 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native'
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { API_URL } from '@env';
 import useFetch from '../hooks/useFetch';
 import JobCard from '../components/JobCard';
-import { API_URL } from '@env';
+import { remove } from '../store/reducer';
 
-export default function JobListScreen({ navigation }) {
+export default function FavoritesScreen({ navigation }) {
+    const ids = useSelector(state => state.ids.value);
     const { data, loading, error } = useFetch(API_URL + '?page=0')
+
+    const dispatch = useDispatch();
 
     if (loading)
         return <ActivityIndicator size='large' />
@@ -17,14 +22,20 @@ export default function JobListScreen({ navigation }) {
         return <Text>No data available</Text>;
     }
 
+    const Favorites = data.results.filter(item => ids.includes(item.id));
+
     const handleNavigate = (id, name, locations, levels, contents) => {
         navigation.navigate('Details', { id, name, locations, levels, contents })
+    }
+
+    const handleRemove = (id) => {
+        dispatch(remove(id))
     }
 
     return (
         <View style={styles.container}>
             <FlatList
-                data={data.results}
+                data={Favorites}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => {
                     const locations = item.locations.map(location => location.name).join(', ')
@@ -35,7 +46,9 @@ export default function JobListScreen({ navigation }) {
                             type={item.type}
                             locations={locations}
                             levels={levels}
-                            onPress={() => handleNavigate(item.id, item.name, locations, levels, item.contents)} />
+                            onPress={() => handleNavigate(item.id, item.name, locations, levels, item.contents)}
+                            favorite
+                            remove={() => handleRemove(item.id)} />
                     )
                 }}
             />
@@ -45,7 +58,6 @@ export default function JobListScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: 'lightgray',
-    }
+        flex: 1
+    },
 })
