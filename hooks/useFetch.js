@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function useFetch() {
+function useFetch(url) {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
     const fetchData = async () => {
         try {
-            const { data: responseData } = await axios.get('https://api-v2.themuse.com/jobs?page=0')
+            const { data: responseData } = await axios.get(url)
             setData(responseData)
             setLoading(false)
         } catch (err) {

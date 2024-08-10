@@ -1,16 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
 
-export default function JobCard({ name, type, locations, levels }) {
+export default function JobCard({ name, type, locations, levels, onPress }) {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>{name}</Text>
-            <Text style={styles.type}>{type}</Text>
-            <View style={styles.inner_container}>
-                <Text style={styles.locations}>{locations}</Text>
+        <TouchableWithoutFeedback onPress={onPress}>
+            <View style={styles.container}>
+                <Text style={styles.title}>{name}</Text>
+                <Text style={styles.type}>{type}</Text>
+                <View style={styles.inner_container}>
+                    <Text style={styles.locations}>{locations}</Text>
+                </View>
+                <Text style={styles.levels}>{levels}</Text>
             </View>
-            <Text style={styles.levels}>{levels}</Text>
-        </View>
+        </TouchableWithoutFeedback>
     )
 }
 
